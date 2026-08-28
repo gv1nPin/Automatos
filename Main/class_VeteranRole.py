@@ -1,30 +1,8 @@
-from enum import Enum
+from enums import RoleType, BenefitLevel
 
-class BenefitLevel(Enum):
-    """Справочник уровней финансирования для льгот
 
-    Args:
-        Enum (_type_): уровень льгот
-    """
-    FEDERAL = "Федеральный бюджет"
-    REGIONAL = "Региональный бюджет"
-    NONE = "Без льгот"
 
-class VeteranRole(Enum):
-    """Класс-справочник для категорий ветеранов(Enum)
-
-    Args:
-        Enum (_type_): список ролей
-    """
-    # категории ролей
-    COMBAT_VETERAN = "Ветеран боевых действий"
-    # Участник боевых действий(федеральные льготы)
-    DISABLED_VETERAN = "Инвалид боевых действий"
-    # Инвалидность в следствие травмы/контузии ранения(федеральные льготы)
-    MILITARY_SERVICE_VETERAN = "Ветеран военной службы"
-    # Стаж службы более 20 лет(региональные льготы)
-    
-    NON_VETERAN = "Гражданский пациент"
+class Veteran:
 
     def get_benefit_level(self) ->BenefitLevel:
         """Проверка 
@@ -32,9 +10,9 @@ class VeteranRole(Enum):
         Returns:
             bool: проверка *уровня* роли
         """
-        if self in (VeteranRole.COMBAT_VETERAN, VeteranRole.DISABLED_VETERAN):
+        if self in (RoleType.COMBAT_VETERAN, RoleType.DISABLED_VETERAN):
             return BenefitLevel.FEDERAL
-        if self == VeteranRole.MILITARY_SERVICE_VETERAN:
+        if self == RoleType.MILITARY_SERVICE_VETERAN:
             return BenefitLevel.REGIONAL
         return BenefitLevel.NONE
 
@@ -50,9 +28,9 @@ class VeteranRole(Enum):
 
         if danger_level <= 2:
             return 30 # если уровень контроля по препарату низкий, можно купить 30 штук за раз
-        if self == VeteranRole.DISABLED_VETERAN:
+        if self == RoleType.DISABLED_VETERAN:
             return 10 # DISABLED_VETERAN допуск по строгим препаратам 10
-        if self == VeteranRole.COMBAT_VETERAN:
+        if self == RoleType.COMBAT_VETERAN:
             return 5 # COMBAT_VETERAN допуск по строгим препаратам 5
         else:
             return 2
@@ -66,12 +44,12 @@ class VeteranRole(Enum):
         """
         documents = ["Медицинский рецепт Для наркотических и психотропных веществ это форма № 107-1/у-НП, для сильнодействующих и комбинированных препаратов — форма № 148-1/у-88"]
 
-        if self in (VeteranRole.COMBAT_VETERAN, VeteranRole.DISABLED_VETERAN):
+        if self in (RoleType.COMBAT_VETERAN, RoleType.DISABLED_VETERAN):
             documents.append("Паспорт РФ")
             documents.append("Удостоверение ветерана боевых действий (УВБД)")
             documents.append("СНИЛС")
 
-        elif self == VeteranRole.MILITARY_SERVICE_VETERAN:
+        elif self == RoleType.MILITARY_SERVICE_VETERAN:
             documents.append("Паспорт РФ")
             documents.append("Удостоверение ветерана боевых действий (УВБД)")
         else: # Блок для не ветерана
