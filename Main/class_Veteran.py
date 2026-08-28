@@ -1,6 +1,9 @@
 from enums import RoleType, BenefitLevel
 
 class Veteran:
+    def __init__(self, name: str, role: RoleType):
+        self.name = name
+        self.role = role
 
     def get_benefit_level(self) ->BenefitLevel:
         """Проверка 
