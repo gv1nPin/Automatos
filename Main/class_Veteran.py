@@ -1,7 +1,5 @@
 from enums import RoleType, BenefitLevel
 
-
-
 class Veteran:
 
     def get_benefit_level(self) ->BenefitLevel:
