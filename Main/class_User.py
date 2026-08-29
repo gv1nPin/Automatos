@@ -10,7 +10,17 @@ class User(ABC):
         # Блок контроля
         self.is_active = is_active
         self.is_blocked = False
-        self.is_block_reason = ?
+        self.block_reason = None
+
+    def block_user(self, reason: str):
+        self.is_active = False
+        self.is_blocked = True
+        self.block_reason = reason
+
+    def unblock_user(self,):
+        self.is_active = True
+        self.is_blocked = False
+        self.block_reason = None
 
     @abstractmethod
     def get_max_daily_allowed(self, danger_level: int) ->int:
