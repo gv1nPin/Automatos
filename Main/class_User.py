@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from enums import VeteranRole, BenefitLevel
 
 class User(ABC):
     def __init__(self,user_id: str,  name: str, clearance_level: int, is_active: bool = True ):
