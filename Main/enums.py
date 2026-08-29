@@ -9,7 +9,7 @@ class BenefitLevel(Enum):
     REGIONAL = "Региональный бюджет"
     NONE = "Без льгот"
 
-class RoleType(Enum):
+class VeteranRole(Enum):
     """Класс-справочник для категорий ветеранов(Enum)
 
     Args:

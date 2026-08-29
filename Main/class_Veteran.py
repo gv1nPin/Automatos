@@ -1,9 +1,13 @@
-from enums import RoleType, BenefitLevel
+from .enums import VeteranRole, BenefitLevel
+from .class_User import User
 
-class Veteran:
-    def __init__(self, name: str, role: RoleType):
-        self.name = name
+class Veteran(User):
+    def __init__(self,user_id, name: str, clearance_level: int, role: VeteranRole):
+        super().__init__(user_id, name, clearance_level)
         self.role = role
+
+    def get_role_name(self) -> str:
+        return self.role.value
 
     def get_benefit_level(self) ->BenefitLevel:
         """Проверка 
@@ -11,9 +15,9 @@ class Veteran:
         Returns:
             bool: проверка *уровня* роли
         """
-        if self.role in (RoleType.COMBAT_VETERAN, RoleType.DISABLED_VETERAN):
+        if self.role in (VeteranRole.COMBAT_VETERAN, VeteranRole.DISABLED_VETERAN):
             return BenefitLevel.FEDERAL
-        if self.role == RoleType.MILITARY_SERVICE_VETERAN:
+        if self.role == VeteranRole.MILITARY_SERVICE_VETERAN:
             return BenefitLevel.REGIONAL
         return BenefitLevel.NONE
 
@@ -29,9 +33,9 @@ class Veteran:
 
         if danger_level <= 2:
             return 30 # если уровень контроля по препарату низкий, можно купить 30 штук за раз
-        if self.role == RoleType.DISABLED_VETERAN:
+        if self.role == VeteranRole.DISABLED_VETERAN:
             return 10 # DISABLED_VETERAN допуск по строгим препаратам 10
-        if self.role == RoleType.COMBAT_VETERAN:
+        if self.role == VeteranRole.COMBAT_VETERAN:
             return 5 # COMBAT_VETERAN допуск по строгим препаратам 5
         else:
             return 2
@@ -46,11 +50,11 @@ class Veteran:
         documents = ["Медицинский рецепт Для наркотических и психотропных веществ это форма № 107-1/у-НП, для сильнодействующих и комбинированных препаратов — форма № 148-1/у-88"]
         documents.append("Паспорт РФ")
 
-        if self.role in (RoleType.COMBAT_VETERAN, RoleType.DISABLED_VETERAN):
+        if self.role in (VeteranRole.COMBAT_VETERAN, VeteranRole.DISABLED_VETERAN):
             documents.append("Удостоверение ветерана боевых действий (УВБД)")
             documents.append("СНИЛС")
 
-        elif self.role == RoleType.MILITARY_SERVICE_VETERAN:
+        elif self.role == VeteranRole.MILITARY_SERVICE_VETERAN:
             documents.append("Удостоверение ветерана военной службы (УВСС)")
 
         return documents
