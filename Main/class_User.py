@@ -15,3 +15,7 @@ class User(ABC):
     @abstractmethod
     def get_max_daily_allowed(self, danger_level: int) ->int:
         pass
+
+    @abstractmethod
+    def get_role_name(self) -> str:
+        pass

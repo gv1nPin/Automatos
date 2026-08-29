@@ -6,6 +6,9 @@ class Veteran(User):
         super().__init__(user_id, name, clearance_level)
         self.role = role
 
+    def get_role_name(self) -> str:
+        return self.role.value
+
     def get_benefit_level(self) ->BenefitLevel:
         """Проверка 
 
