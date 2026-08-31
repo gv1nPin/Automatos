@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 class AbstractUser(ABC):
-    def __init__(self,user_id: str,  name: str, clearance_level: int, is_active: bool = True, is_blocked: bool =False ):
+    def __init__(self,user_id: str,  name: str, clearance_level: int, is_active: bool = True, is_blocked: bool = False ):
         # Блок идентификации
         self.user_id = user_id
         self.name = name
