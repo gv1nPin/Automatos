@@ -1,7 +1,7 @@
 from .enums import VeteranRole, BenefitLevel
-from .class_User import User
+from .class_AbctractUser import AbstractUser
 
-class Veteran(User):
+class Veteran(AbstractUser):
     def __init__(self,user_id, name: str, clearance_level: int, role: VeteranRole):
         super().__init__(user_id, name, clearance_level)
         self.role = role

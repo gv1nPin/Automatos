@@ -1,8 +1,8 @@
 import pytest
-from Main.class_User import User 
+from Main.class_AbctractUser import AbstractUser 
 
 # 1. Создаем заглушку дочернего класса, чтобы протестировать логику базового класса User
-class MockUser(User):
+class MockUser(AbstractUser ):
     def get_max_daily_allowed(self, danger_level: int) -> int:
         return 30
 
