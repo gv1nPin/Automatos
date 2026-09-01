@@ -1,4 +1,4 @@
-from .enums import VeteranRole, BenefitLevel
+from .Enums import VeteranRole, BenefitLevel
 from .class_AbstractUser import AbstractUser
 
 class Veteran(AbstractUser):

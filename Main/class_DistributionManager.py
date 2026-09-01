@@ -1,4 +1,5 @@
-from class_AbstractUser import AbstractUser
+from .class_AbstractUser import AbstractUser
+from .class_AbstractControlledItem import AbstractControlledItem
 
 class DistributionManager:
     def __init__(self, inventory_service, auditlog):
