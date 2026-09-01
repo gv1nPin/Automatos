@@ -6,6 +6,7 @@ class RobotStaff(AbstractUser):
         super().__init__(user_id, name, clearance_level)
         self.model_version = model_version
         self.is_mechanical_ok = is_mechanical
+        self.maintenance_reason = None
 
     def get_role_name(self) -> str:
         return f"Раздатчик (Модель: {self.model_version})"
@@ -19,6 +20,11 @@ class RobotStaff(AbstractUser):
 
     def dispense(self, item_id: str, quantity: int, recipient_name: str) -> bool:
         """Выдача"""
+        if not self.can_operate():
+            return False
+        return True
+
+    def verify_scanned_documents(self, documents: list[str]) -> bool:
         if not self.can_operate():
             return False
         return True
