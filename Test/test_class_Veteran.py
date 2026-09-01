@@ -1,5 +1,5 @@
 import pytest
-from Main.enums import VeteranRole, BenefitLevel
+from Main.Enums import VeteranRole, BenefitLevel
 from Main.class_Veteran import Veteran 
 
 # Сводные дефолтные данные для тестов
@@ -47,10 +47,16 @@ def test_high_danger_level_allowance_combat_veteran(danger_level):
 
 @pytest.mark.parametrize("role_enum", [VeteranRole.MILITARY_SERVICE_VETERAN, VeteranRole.NON_VETERAN])
 @pytest.mark.parametrize("danger_level", [3, 4, 5])  # ИСПРАВЛЕНО: добавлены значения [3, 4, 5]
-def test_high_danger_level_allowance_others(role_enum, danger_level):
-    """Проверка базового лимита (2 шт) для остальных на строгие препараты."""
-    v = Veteran(TEST_ID, "Пациент", TEST_CL, role=role_enum)
+def test_high_danger_level_allowance_military_service_veteran(danger_level):
+    """Проверка лимита (2 шт) для ветеранов военной службы на строгие препараты."""
+    v = Veteran(TEST_ID, "Пациент ВС", TEST_CL, role=VeteranRole.MILITARY_SERVICE_VETERAN)
     assert v.get_max_daily_allowed(danger_level) == 2
+
+@pytest.mark.parametrize("danger_level", [3, 4, 5])
+def test_high_danger_level_allowance_non_veteran(danger_level):
+    """Проверка безопасности: для гражданских лиц лимит на опасные вещества равен 0."""
+    v = Veteran(TEST_ID, "Гражданский Пациент", TEST_CL, role=VeteranRole.NON_VETERAN)
+    assert v.get_max_daily_allowed(danger_level) == 0
 
 
 # =========================================================================
