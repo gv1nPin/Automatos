@@ -1,6 +1,8 @@
+from class_AbstractUser import AbstractUser
+
 class DistributionManager:
-    def __init__(self, inventory, auditlog):
-        self.inventory = inventory
+    def __init__(self, inventory_service, auditlog):
+        self.inventory = inventory_service
         self.auditlog = auditlog
 
     def process_distribution_request(
