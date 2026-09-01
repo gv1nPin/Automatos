@@ -1,5 +1,5 @@
 from .enums import VeteranRole, BenefitLevel
-from .class_AbctractUser import AbstractUser
+from .class_AbstractUser import AbstractUser
 
 class Veteran(AbstractUser):
     def __init__(self,user_id, name: str, clearance_level: int, role: VeteranRole):
