@@ -44,7 +44,6 @@ def test_high_danger_level_allowance_combat_veteran(danger_level):
     v = Veteran(TEST_ID, "Олег", TEST_CL, role=VeteranRole.COMBAT_VETERAN)
     assert v.get_max_daily_allowed(danger_level) == 5
 
-# ИСПРАВЛЕНО: добавлена переменная role_enum в аргументы функции и в инициализацию Veteran
 @pytest.mark.parametrize("role_enum", [VeteranRole.MILITARY_SERVICE_VETERAN])
 @pytest.mark.parametrize("danger_level", [3, 4, 5])
 def test_high_danger_level_allowance_military_service_veteran(role_enum, danger_level):
@@ -52,7 +51,6 @@ def test_high_danger_level_allowance_military_service_veteran(role_enum, danger_
     v = Veteran(TEST_ID, "Пациент ВС", TEST_CL, role=role_enum)
     assert v.get_max_daily_allowed(danger_level) == 2
 
-# ИСПРАВЛЕНО: Удален лишний дублирующийся декоратор ролей, тест проверяет только NON_VETERAN
 @pytest.mark.parametrize("danger_level", [3, 4, 5])
 def test_high_danger_level_allowance_non_veteran(danger_level):
     """Проверка безопасности: для гражданских лиц лимит на опасные вещества равен 0."""
