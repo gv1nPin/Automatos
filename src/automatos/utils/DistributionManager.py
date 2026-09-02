@@ -64,11 +64,8 @@ class DistributionManager:
                 hardware_success = operator.dispense(item.item_id, quantity, recipient.name)
                 if not hardware_success:
                     self.inventory.add_item(item.item_id, quantity)
-                    try:
-                        operator.is_mechanical_ok = False
-                        operator.maintenance_reason = "сбой"
-                    except AttributeError:
-                        pass
+                    operator.is_mechanical_ok = False
+                    operator.maintenance_reason = "сбой"
                     return self.reject_transaction(operator, recipient, item, quantity, "Механический сбой устройства выдачи")
             except AttributeError:
                 self.inventory.add_item(item.item_id, quantity)
