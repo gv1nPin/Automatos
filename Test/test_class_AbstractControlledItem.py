@@ -29,7 +29,7 @@ def test_abstract_class_constructor_initializes_fields_correctly():
     """Проверка Инкапсуляции: родительский конструктор правильно записывает свойства."""
     # Создаем объект через наш тестовый подкласс
     item = ConcreteTestItem(
-        item_id="FMJ-99",
+        item_id="ITM-99",
         name="Патроны",
         danger_level=3,
         unit="пачка",
