@@ -63,10 +63,10 @@ class DistributionManager:
                 pass
 
             self.auditlog.log_success(
-                operator_id=operator.user_id,
-                recipient_id=recipient.user_id,
-                item_id=item.item_id,
-                quantity=quantity
+                operator_id = operator.user_id,
+                recipient_id = recipient.user_id,
+                item_id = item.item_id,
+                quantity = quantity
             )
             return True
 
@@ -82,10 +82,10 @@ class DistributionManager:
                             reason: str
                             ) -> bool:
         self.auditlog.log_failure(
-            operator_id=operator.user_id,
-            recipient_id=recipient.user_id,
-            item_id=item.item_id,
-            quantity=quantity,
-            reason=reason
+            operator_id = operator.user_id,
+            recipient_id = recipient.user_id,
+            item_id = item.item_id,
+            quantity = quantity,
+            reason = reason
         )
         return False
