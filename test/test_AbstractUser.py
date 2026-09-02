@@ -1,7 +1,11 @@
 import pytest
+# Абсолютный импорт по структуре пакета src.automatos
 from src.automatos.User.AbstractUser import AbstractUser 
 
-# 1. Создаем заглушку дочернего класса, чтобы протестировать логику базового класса User
+# =========================================================================
+# ВСПОМОГАТЕЛЬНЫЙ КЛАСС-НАСЛЕДНИК ДЛЯ ТЕСТИРОВАНИЯ АБСТРАКЦИИ
+# =========================================================================
+
 class MockUser(AbstractUser):
     def get_max_daily_allowed(self, danger_level: int) -> int:
         return 30
@@ -9,28 +13,43 @@ class MockUser(AbstractUser):
     def get_role_name(self) -> str:
         return "Тестовый пользователь"
 
-    # ДОБАВЛЕНО: удовлетворяем новый контракт абстрактного класса AbstractUser
     def requires_additional_doc(self) -> list[str]:
         """Заглушка метода контроля документов для успешной сборки абстракции."""
         return []
 
 
-# Все остальные тесты ниже оставляем БЕЗ ИЗМЕНЕНИЙ
 @pytest.fixture
 def active_user():
+    """Фикстура для создания чистого тестового пользователя перед каждым тестом."""
     return MockUser(user_id="U-001", name="Иван Иванов", clearance_level=3)
 
 
 # =========================================================================
-# ТЕСТЫ БЛОКА КОНТРОЛЯ СОСТОЯНИЯ
+# ТЕСТЫ ПРАВИЛ АБСТРАКЦИИ И ИНИЦИАЛИЗАЦИИ
 # =========================================================================
 
+def test_cannot_instantiate_abstract_user_directly():
+    """Проверка правила Абстракции: напрямую создать объект AbstractUser нельзя."""
+    with pytest.raises(TypeError) as exc_info:
+        AbstractUser(user_id="U-000", name="Абстракт", clearance_level=1)
+    
+    error_msg = str(exc_info.value)
+    assert "abstract class" in error_msg.lower()
+
+
 def test_initial_user_state(active_user):
-    """Проверка начального (здорового) состояния пользователя."""
+    """Проверка начального (здорового) состояния пользователя и инкапсуляции конструктора."""
+    assert active_user.user_id == "U-001"
+    assert active_user.name == "Иван Иванов"
+    assert active_user.clearance_level == 3
     assert active_user.is_active is True
     assert active_user.is_blocked is False
     assert active_user.block_reason is None
 
+
+# =========================================================================
+# ТЕСТЫ БЛОКА КОНТРОЛЯ СОСТОЯНИЯ (БИЗНЕС-ЛОГИКА СТАТУСОВ)
+# =========================================================================
 
 def test_block_user_changes_all_statuses(active_user):
     """Проверка синхронного изменения статусов при блокировке."""
@@ -53,7 +72,7 @@ def test_unblock_user_clears_reason(active_user):
     
     assert active_user.is_active is True
     assert active_user.is_blocked is False
-    assert active_user.block_reason is None  # Блок самопроверки успешно зачистил данные
+    assert active_user.block_reason is None  # Данные успешно зачищены
 
 
 @pytest.mark.parametrize("reason", [
@@ -62,6 +81,6 @@ def test_unblock_user_clears_reason(active_user):
     "Технические работы"
 ])
 def test_multiple_block_reasons(active_user, reason):
-    """Параметризованный тест для проверки разных текстовых причин блокировки."""
+    """Параметризованный тест для проверки различных текстовых причин блокировки."""
     active_user.block_user(reason)
     assert active_user.block_reason == reason

@@ -1,4 +1,5 @@
 import pytest
+# Абсолютный импорт согласно новой структуре пакета src.automatos
 from src.automatos.Item.AbstractControlledItem import AbstractControlledItem
 
 # =========================================================================
@@ -17,12 +18,13 @@ class ConcreteTestItem(AbstractControlledItem):
 
 def test_cannot_instantiate_abstract_class_directly():
     """Проверка правила Абстракции: напрямую создать объект базового класса нельзя."""
-    # Блок try/except проверяет, что Python выбросит TypeError при попытке вызова
+    # Пытаемся вызвать конструктор абстрактного класса напрямую
     with pytest.raises(TypeError) as exc_info:
         AbstractControlledItem(item_id="1", name="Тест", danger_level=1, unit="шт")
     
-    # Проверяем, что в тексте ошибки написано про абстрактный класс
-    assert "Can't instantiate abstract class" in str(exc_info.value)
+    # Ищем ключевую фразу "abstract class" — это сработает на любой версии Python
+    error_msg = str(exc_info.value)
+    assert "abstract class" in error_msg.lower()
 
 
 def test_abstract_class_constructor_initializes_fields_correctly():
@@ -36,7 +38,7 @@ def test_abstract_class_constructor_initializes_fields_correctly():
         is_restricted=True
     )
     
-    # Проверяем, что базовые поля, описанные в ТЗ Руслана, созданы корректно
+    # Проверяем корректность инициализации полей базового класса
     assert item.item_id == "ITM-99"
     assert item.name == "Патроны"
     assert item.danger_level == 3
