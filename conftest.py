@@ -2,19 +2,20 @@ import os
 import sys
 import pytest
 
-# 1. Динамическое добавление корневой директории и папки src в sys.path.
-# Это гарантирует, что pytest найдет пакеты Item, User и utils из любой папки запуска.
+# 1. Динамическое добавление всех уровней в sys.path.
+# Это гарантирует, что pytest и Pylance увидят модули независимо от точки запуска.
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, PROJECT_ROOT)
 sys.path.insert(0, os.path.join(PROJECT_ROOT, "src"))
+sys.path.insert(0, os.path.join(PROJECT_ROOT, "src", "automatos"))
 
-# Импортируем перечисления и классы для фикстур (теперь они импортируются без ошибок)
-from src.utils.Enums import VeteranRole
-from src.utils.AuditLog import AuditLog
-from src.utils.DistributionManager import DistributionManager
-from src.User.RobotStaff import RobotStaff
-from src.User.Veteran import Veteran
-from src.Item.MedicalItem import MedicalItem
+# ОБНОВЛЕНО: Импортируем классы с учетом новой вложенности папки automatos
+from src.automatos.utils.Enums import VeteranRole
+from src.automatos.utils.AuditLog import AuditLog
+from src.automatos.utils.DistributionManager import DistributionManager
+from src.automatos.User.RobotStaff import RobotStaff
+from src.automatos.User.Veteran import Veteran
+from src.automatos.Item.MedicalItem import MedicalItem
 
 # ==========================================
 # ФИКСТУРЫ ДЛЯ ТЕСТИРОВАНИЯ (FIXTURES)
@@ -35,12 +36,17 @@ def mock_inventory():
     """Имитация склада для тестов."""
     class TestInventory:
         def __init__(self):
+            # Начальный склад для изоляции тестов
             self.stock = {"MED-001": 100, "MED-999": 20}
         def is_in_stock(self, item_id: str, quantity: int) -> bool:
             return self.stock.get(item_id, 0) >= quantity
         def deduct_item(self, item_id: str, quantity: int) -> None:
+            if not self.is_in_stock(item_id, quantity):
+                raise Exception("Ошибка склада: недостаточно товара для списания!")
             self.stock[item_id] -= quantity
         def add_item(self, item_id: str, quantity: int) -> None:
+            if item_id not in self.stock:
+                self.stock[item_id] = 0
             self.stock[item_id] += quantity
     return TestInventory()
 
@@ -51,7 +57,7 @@ def manager(mock_inventory, clean_audit_log):
 
 @pytest.fixture
 def robot_operator():
-    """Исправный робот-оператор с максимальным допуском."""
+    """Исправный робот-оператор с максимальным допуском (clearance_level = 5)."""
     return RobotStaff(user_id="R-24", name="Валли-01", clearance_level=5, model_version="v2.1")
 
 @pytest.fixture
