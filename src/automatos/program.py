@@ -8,6 +8,9 @@ from src.automatos.Item.MedicalItem import MedicalItem
 from src.automatos.utils.AuditLog import AuditLog
 from src.automatos.utils.DistributionManager import DistributionManager
 from src.automatos.Inventory.Stock import Stock
+from src.automatos.Inventory.AbstractInventory import AbstractInventory
+from src.automatos.Inventory.MedicalInventory import MedicalInventory
+
 
 _global_entity_registry: Dict[str, Any] = {}
 
@@ -93,7 +96,7 @@ def run_scenario_4(manager: DistributionManager, operator: RobotStaff, recipient
     operator.dispense = original_dispense
 
 
-def run_warehouse_reconciliation(inventory: MedicalInventory, audit_log: AuditLog) -> None:
+def run_warehouse_reconciliation(inventory: AbstractInventory, audit_log: AuditLog) -> None:
     print_header("СИСТЕМНЫЙ КОНТРОЛЬ: Инспекция и сверка остатков с AuditLog")
     
     formatted_changes = []
@@ -115,7 +118,7 @@ def run_warehouse_reconciliation(inventory: MedicalInventory, audit_log: AuditLo
         print("СТАТУС: Критическая ошибка. Обнаружено расхождение между физическим балансом ячеек и AuditLog!")
 
 
-def run_cross_verification(patients: List[Veteran], inventory: MedicalInventory, items: List[MedicalItem]) -> None:
+def run_cross_verification(patients: List[Veteran], inventory: AbstractInventory, items: List[MedicalItem]) -> None:
     print_header("МАТРИЦА СОВМЕСТИМОСТИ ДОМЕННЫХ ДАННЫХ")
     
     print("\n[Адресное состояние зон хранения (Ячейки Stock)]")
