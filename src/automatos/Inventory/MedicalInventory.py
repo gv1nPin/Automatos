@@ -1,3 +1,4 @@
+from src.automatos.Inventory.AbstractInventory import AbstractInventory
 class MedicalInventory(AbstractInventory):
     # Высокоуровневый адаптер склада для интеграции с DistributionManager.
     def __init__(self, storage_id: str, is_locked: bool = False):
