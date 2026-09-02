@@ -1,4 +1,4 @@
-from .class_AbstractControlledItem import AbstractControlledItem
+from src.automatos.Item.AbstractControlledItem import AbstractControlledItem
 
 class MedicalItem(AbstractControlledItem):
     """ Производный класс для медицинских препаратов (лекарств).

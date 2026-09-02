@@ -1,7 +1,7 @@
 import pytest
 import datetime
-from src.class_AuditLog import AuditLog
-from src.Enums import VeteranRole
+from src.automatos.utils.AuditLog import AuditLog
+from src.automatos.utils.Enums import VeteranRole
 
 # =====================================================================
 # ВСПЕМОГАТЕЛЬНЫЕ КЛАССЫ-ЗАГЛУШКИ ДЛЯ ТЕСТИРОВАНИЯ МЕТОДА log_transaction

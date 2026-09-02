@@ -1,12 +1,10 @@
 import sys
-from .class_AbstractUser import AbstractUser
-from .class_AbstractControlledItem import AbstractControlledItem
-from .class_RobotStaff import RobotStaff
-from .class_Veteran import Veteran
-from .class_MedicalItem import MedicalItem
-from .class_AuditLog import AuditLog
-from .class_DistributionManager import DistributionManager
-from .Enums import VeteranRole
+from src.automatos.Item.MedicalItem import MedicalItem
+from src.automatos.User.RobotStaff import RobotStaff
+from src.automatos.User.Veteran import Veteran
+from src.automatos.utils.AuditLog import AuditLog
+from src.automatos.utils.DistributionManager import DistributionManager
+from src.automatos.utils.Enums import VeteranRole
 
 # === ВРЕМЕННАЯ ЗАГЛУШКА ДЛЯ INVENTORY SERVICE ===
 class MockInventoryService:

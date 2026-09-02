@@ -1,5 +1,5 @@
 import pytest
-from src.class_MedicalItem import MedicalItem
+from src.automatos.Item.MedicalItem import MedicalItem
 
 # Сводные дефолтные данные для создания тестовых медикаментов
 TEST_ITEM_ID = "MED-101"

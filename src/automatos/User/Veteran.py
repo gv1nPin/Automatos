@@ -1,5 +1,5 @@
-from .Enums import VeteranRole, BenefitLevel
-from .class_AbstractUser import AbstractUser
+from src.automatos.utils.Enums import VeteranRole, BenefitLevel
+from src.automatos.User.AbstractUser import AbstractUser
 
 class Veteran(AbstractUser):
     def __init__(self,user_id, name: str, clearance_level: int, role: VeteranRole):

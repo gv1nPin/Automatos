@@ -1,4 +1,4 @@
-from .class_AbstractUser import AbstractUser
+from src.automatos.User.AbstractUser import AbstractUser
 
 class RobotStaff(AbstractUser):
     def __init__(self, user_id: str, name: str, clearance_level: int, model_version: str, is_mechanical: bool = True):
