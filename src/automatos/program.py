@@ -41,7 +41,7 @@ def print_header(title: str) -> None:
 
 
 def display_scenario_result(success: bool) -> None:
-    status = "ТРАНЗАКЦИЯ ОДОБРЕНА БИЗНЕС-ЛОГИКОЙ" if success else "ТРАНЗАКЦИЯ ОТКЛОНЕНА АВТОМАТИКОЙ КОНТРОЛЯ"
+    status = "Роботологикой" if success else "...чем-то"
     print(f"Статус на панели мониторинга: [{status}]")
 
 
