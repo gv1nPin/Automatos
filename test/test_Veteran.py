@@ -1,6 +1,6 @@
 import pytest
-from src.Enums import VeteranRole, BenefitLevel
-from src.class_Veteran import Veteran 
+from src.automatos.utils.Enums import VeteranRole, BenefitLevel
+from src.automatos.User.Veteran import Veteran 
 
 # Сводные дефолтные данные для тестов
 TEST_ID = "U-999"
@@ -21,7 +21,6 @@ def test_all_roles_benefit_levels(role, expected_benefit):
     v = Veteran(TEST_ID, "Тестовый Пациент", TEST_CL, role=role)
     assert v.get_benefit_level() == expected_benefit
 
-
 # =========================================================================
 # 2. ТЕСТЫ ДЛЯ МЕТОДА get_max_daily_allowed
 # =========================================================================
@@ -33,23 +32,23 @@ def test_low_danger_level_allowance(role_enum):
     assert v.get_max_daily_allowed(danger_level=1) == 30
     assert v.get_max_daily_allowed(danger_level=2) == 30
 
-@pytest.mark.parametrize("danger_level", [3, 4, 5])  # ИСПРАВЛЕНО: добавлены значения [3, 4, 5]
+@pytest.mark.parametrize("danger_level", [3, 4, 5])
 def test_high_danger_level_allowance_disabled_veteran(danger_level):
     """Проверка лимита (10 шт) для инвалидов БД на строгие препараты."""
     v = Veteran(TEST_ID, "Игорь", TEST_CL, role=VeteranRole.DISABLED_VETERAN)
     assert v.get_max_daily_allowed(danger_level) == 10
 
-@pytest.mark.parametrize("danger_level", [3, 4, 5])  # ИСПРАВЛЕНО: добавлены значения [3, 4, 5]
+@pytest.mark.parametrize("danger_level", [3, 4, 5])
 def test_high_danger_level_allowance_combat_veteran(danger_level):
     """Проверка лимита (5 шт) для ветеранов БД на строгие препараты."""
     v = Veteran(TEST_ID, "Олег", TEST_CL, role=VeteranRole.COMBAT_VETERAN)
     assert v.get_max_daily_allowed(danger_level) == 5
 
-@pytest.mark.parametrize("role_enum", [VeteranRole.MILITARY_SERVICE_VETERAN, VeteranRole.NON_VETERAN])
-@pytest.mark.parametrize("danger_level", [3, 4, 5])  # ИСПРАВЛЕНО: добавлены значения [3, 4, 5]
-def test_high_danger_level_allowance_military_service_veteran(danger_level):
+@pytest.mark.parametrize("role_enum", [VeteranRole.MILITARY_SERVICE_VETERAN])
+@pytest.mark.parametrize("danger_level", [3, 4, 5])
+def test_high_danger_level_allowance_military_service_veteran(role_enum, danger_level):
     """Проверка лимита (2 шт) для ветеранов военной службы на строгие препараты."""
-    v = Veteran(TEST_ID, "Пациент ВС", TEST_CL, role=VeteranRole.MILITARY_SERVICE_VETERAN)
+    v = Veteran(TEST_ID, "Пациент ВС", TEST_CL, role=role_enum)
     assert v.get_max_daily_allowed(danger_level) == 2
 
 @pytest.mark.parametrize("danger_level", [3, 4, 5])
@@ -57,7 +56,6 @@ def test_high_danger_level_allowance_non_veteran(danger_level):
     """Проверка безопасности: для гражданских лиц лимит на опасные вещества равен 0."""
     v = Veteran(TEST_ID, "Гражданский Пациент", TEST_CL, role=VeteranRole.NON_VETERAN)
     assert v.get_max_daily_allowed(danger_level) == 0
-
 
 # =========================================================================
 # 3. ТЕСТЫ ДЛЯ МЕТОДА requires_additional_doc

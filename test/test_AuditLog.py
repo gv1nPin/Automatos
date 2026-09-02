@@ -1,12 +1,7 @@
 import pytest
 import datetime
-from src.class_AuditLog import AuditLog
-from src.Enums import VeteranRole
-
-# =====================================================================
-# ВСПЕМОГАТЕЛЬНЫЕ КЛАССЫ-ЗАГЛУШКИ ДЛЯ ТЕСТИРОВАНИЯ МЕТОДА log_transaction
-# =====================================================================
-
+from src.automatos.utils.AuditLog import AuditLog
+from src.automatos.utils.Enums import VeteranRole
 class DummyUser:
     def __init__(self, user_id: str, name: str, role_name: str):
         self.user_id = user_id
@@ -21,11 +16,6 @@ class DummyItem:
         self.item_id = item_id
         self.name = name
         self.batch_or_lot = batch_or_lot
-
-
-# =====================================================================
-# ФИКСТУРЫ ТЕСТИРОВАНИЯ
-# =====================================================================
 
 @pytest.fixture(autouse=True)
 def clean_log():

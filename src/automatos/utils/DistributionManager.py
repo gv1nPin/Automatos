@@ -1,7 +1,7 @@
-from .class_AbstractUser import AbstractUser
-from .class_AbstractControlledItem import AbstractControlledItem
-from .class_RobotStaff import RobotStaff
-from .class_Veteran import Veteran
+from src.automatos.User.AbstractUser import AbstractUser
+from src.automatos.Item.AbstractControlledItem import AbstractControlledItem
+from src.automatos.User.RobotStaff import RobotStaff
+from src.automatos.User.Veteran import Veteran
 
 
 class DistributionManager:
