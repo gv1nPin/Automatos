@@ -1,5 +1,5 @@
 import pytest
-from Main.class_AbstractUser import AbstractUser 
+from src.class_AbstractUser import AbstractUser 
 
 # 1. Создаем заглушку дочернего класса, чтобы протестировать логику базового класса User
 class MockUser(AbstractUser):

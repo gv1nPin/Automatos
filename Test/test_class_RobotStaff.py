@@ -1,5 +1,5 @@
 import pytest
-from Main.class_RobotStaff import RobotStaff
+from src.class_RobotStaff import RobotStaff
 
 # Сводные дефолтные данные для тестов
 TEST_ID = "R-100"

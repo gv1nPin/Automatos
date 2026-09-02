@@ -1,5 +1,5 @@
 import pytest
-from Main.class_DistributionManager import DistributionManager
+from src.class_DistributionManager import DistributionManager
 
 # =====================================================================
 # МОК-ОБЪЕКТЫ ДЛЯ ИЗОЛЯЦИИ ТЕСТИРОВАНИЯ (БЕЗ РЕАЛЬНЫХ БД)

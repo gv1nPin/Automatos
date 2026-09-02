@@ -1,5 +1,5 @@
 import pytest
-from Main.class_AbstractControlledItem import AbstractControlledItem
+from src.class_AbstractControlledItem import AbstractControlledItem
 
 # =========================================================================
 # ВСПОМОГАТЕЛЬНЫЙ КЛАСС-НАСЛЕДНИК ДЛЯ ТЕСТИРОВАНИЯ АБСТРАКЦИИ

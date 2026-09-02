@@ -1,6 +1,6 @@
 import pytest
-from Main.Enums import VeteranRole, BenefitLevel
-from Main.class_Veteran import Veteran 
+from src.Enums import VeteranRole, BenefitLevel
+from src.class_Veteran import Veteran 
 
 # Сводные дефолтные данные для тестов
 TEST_ID = "U-999"
