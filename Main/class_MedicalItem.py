@@ -8,7 +8,6 @@ class MedicalItem(AbstractControlledItem):
         AbstractControlledItem (_type_): _description_
     """
     def __init__(self, item_id: str, name: str, danger_level: int, unit: str, is_restricted: bool = False):
-        # Вызываем конструктор родительского класса через super()
         super().__init__(item_id, name, danger_level, unit, is_restricted)
 
         self.batch_or_lot = "Лот-001" # Дефолтное свойство партии для интеграции с инвентарем и AuditLog
