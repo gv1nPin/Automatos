@@ -156,22 +156,22 @@ def main() -> NoReturn:
     global _global_entity_registry
     
     audit_log = AuditLog()
-    inventory = MedicalInventory(storage_id="ЦЕНТРАЛЬНЫЙ_СКЛАД-1", is_locked=False)
-    manager = DistributionManager(inventory_service=inventory, auditlog=audit_log)
+    inventory = MedicalInventory(storage_id = "ЦЕНТРАЛЬНЫЙ_СКЛАД-1", is_locked = False)
+    manager = DistributionManager(inventory_service = inventory, auditlog = audit_log)
 
-    aspirin = MedicalItem(item_id="MED-001", name="Аспирин", danger_level=1, unit="шт", dosage="500мг", form="Таблетки")
-    morphine = MedicalItem(item_id="MED-999", name="Морфин Сульфат", danger_level=4, unit="амп", dosage="10мг/мл", form="Ампулы", is_restricted=True)
+    aspirin = MedicalItem(item_id = "MED-001", name = "Аспирин", danger_level = 1, unit = "шт", dosage = "500мг", form = "Таблетки")
+    morphine = MedicalItem(item_id = "MED-999", name = "Морфин Сульфат", danger_level = 4, unit="амп", dosage = "10мг/мл", form="Ампулы", is_restricted=True)
     all_items = [aspirin, morphine]
 
-    inventory.add_stock(Stock(item=aspirin, quantity=200, batch_or_lot="BAT-ASP-2026", location_code="A-10"))
-    inventory.add_stock(Stock(item=morphine, quantity=10, batch_or_lot="BAT-MOR-9999", location_code="B-04"))
+    inventory.add_stock(Stock(item=aspirin, quantity=200, batch_or_lot="BAT-ASP-2026", location_code = "A-10"))
+    inventory.add_stock(Stock(item=morphine, quantity=10, batch_or_lot="BAT-MOR-9999", location_code = "B-04"))
 
     robot = RobotStaff(user_id="R-24", name="Валли-01", clearance_level=5, model_version="v2.6_Ultimate")
     robot.is_active = True
 
-    combat_veteran = Veteran(user_id="V-111", name="Иванов И. П.", clearance_level=3, role=VeteranRole.COMBAT_VETERAN)
-    disabled_veteran = Veteran(user_id="V-222", name="Петров О. Н.", clearance_level=4, role=VeteranRole.DISABLED_VETERAN)
-    civilian_patient = Veteran(user_id="V-000", name="Васин Д. А.", clearance_level=1, role=VeteranRole.NON_VETERAN)
+    combat_veteran = Veteran(user_id = "V-111", name = "Иванов И. П.", clearance_level = 3, role = VeteranRole.COMBAT_VETERAN)
+    disabled_veteran = Veteran(user_id = "V-222", name = "Петров О. Н.", clearance_level = 4, role = VeteranRole.DISABLED_VETERAN)
+    civilian_patient = Veteran(user_id = "V-000", name = "Васин Д. А.", clearance_level = 1, role = VeteranRole.NON_VETERAN)
 
     for p in [combat_veteran, disabled_veteran, civilian_patient]:
         p.is_active = True
