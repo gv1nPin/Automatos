@@ -36,6 +36,8 @@ class DistributionManager:
         max_daily_allowed = recipient.get_max_daily_allowed(item.danger_level)
         already_received = self.auditlog.get_recipient_total_received(recipient.user_id, item.item_id, time_window_hours=24)
 
+        print(f"DEBUG: Лимит={max_daily_allowed}, Уже выдано={already_received}, Хочет={quantity}")
+
         if (already_received + quantity) > max_daily_allowed:
             reason = f"Превышен лимит. Доступно {max_daily_allowed}, запрошено {quantity} уже получение {already_received}"
             return self.reject_transaction(operator, recipient, item, quantity, reason)

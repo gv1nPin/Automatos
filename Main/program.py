@@ -68,14 +68,14 @@ def main():
         choice = input("\nВыберите номер действия: ").strip()
 
         if choice == "1":
-            print("\n🎬 Сценарий 1: Выдача Аспирина (Уровень опасности: 1)...")
+            print("\n Сценарий 1: Выдача Аспирина (Уровень опасности: 1)...")
             success = manager.process_distribution_request(
                 operator=robot, recipient=combat_veteran, item=aspirin, quantity=5
             )
             print(f"Результат операции: {'УСПЕХ' if success else 'ОТКАЗ'}")
 
         elif choice == "2":
-            print("\n🎬 Сценарий 2: Тест суточного накопительного лимита (Лимит Ветерана на Морфин = 5 шт)...")
+            print("\n Сценарий 2: Тест суточного накопительного лимита (Лимит Ветерана на Морфин = 5 шт)...")
             print("--- Шаг A: Просим 4 ампулы Морфина (Разрешено, так как 4 <= 5) ---")
             step_1 = manager.process_distribution_request(
                 operator=robot, recipient=combat_veteran, item=morphine, quantity=4
@@ -89,7 +89,7 @@ def main():
             print(f"Шаг Б выполнен: {'УСПЕХ' if step_2 else 'ОТКАЗ'}")
 
         elif choice == "3":
-            print("\n🎬 Сценарий 3: Проверка жестких ограничений роли...")
+            print("\n Сценарий 3: Проверка жестких ограничений роли...")
             print(f"Пациент: {non_veteran.name} (Роль: {non_veteran.get_role_name()}) хочет получить Морфин.")
             success = manager.process_distribution_request(
                 operator=robot, recipient=non_veteran, item=morphine, quantity=1
@@ -97,7 +97,7 @@ def main():
             print(f"Результат операции: {'УСПЕХ' if success else 'ОТКАЗ'}")
 
         elif choice == "4":
-            print("\n🎬 Сценарий 4: Механическая поломка робота...")
+            print("\n Сценарий 4: Механическая поломка робота...")
             print("Специально заставляем метод dispense робота вернуть False...")
             
             # Временно ломаем метод dispense у нашего робота для этого теста
