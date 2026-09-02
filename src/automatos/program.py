@@ -1,41 +1,19 @@
 import sys
-from src.automatos.Item.MedicalItem import MedicalItem
-from src.automatos.User.RobotStaff import RobotStaff
-from src.automatos.User.Veteran import Veteran
-from src.automatos.utils.AuditLog import AuditLog
-from src.automatos.utils.DistributionManager import DistributionManager
-from src.automatos.utils.Enums import VeteranRole
-
-# === ВРЕМЕННАЯ ЗАГЛУШКА ДЛЯ INVENTORY SERVICE ===
-class MockInventoryService:
-    def __init__(self):
-        # Начальный склад: ID предмета -> количество
-        self.stock = {
-            "MED-001": 100,  # Обычное лекарство
-            "MED-999": 20    # Опасное лекарство (наркотическое)
-        }
-
-    def is_in_stock(self, item_id: str, quantity: int) -> bool:
-        return self.stock.get(item_id, 0) >= quantity
-
-    def deduct_item(self, item_id: str, quantity: int) -> None:
-        if not self.is_in_stock(item_id, quantity):
-            raise Exception("Ошибка склада: недостаточно товара для списания!")
-        self.stock[item_id] -= quantity
-        print(f" [Склад]: Списано {quantity} шт. Остаток: {self.stock[item_id]} шт.")
-
-    def add_item(self, item_id: str, quantity: int) -> None:
-        if item_id not in self.stock:
-            self.stock[item_id] = 0
-        self.stock[item_id] += quantity
-        print(f" [Склад - ОТКАТ]: Возвращено {quantity} шт. Новый остаток: {self.stock[item_id]} шт.")
-
+from .User.AbstractUser import AbstractUser
+from .Item.AbstractControlledItem import AbstractControlledItem
+from .User.RobotStaff import RobotStaff
+from .User.Veteran import Veteran
+from .Item.MedicalItem import MedicalItem
+from .utils.AuditLog import AuditLog
+from .utils.DistributionManager import DistributionManager
+from .utils.Enums import VeteranRole
+from .Inventory.AbstractInventory import AbstractInventory
 
 # === ГЛАВНЫЙ СКРИПТ ЗАПУСКА (ИНТЕРФЕЙС) ===
 def main():
     # 1. Инициализируем сервисы
     audit_log = AuditLog()  # Синглтон журнал
-    inventory = MockInventoryService()
+    inventory = AbstractInventory()
     manager = DistributionManager(inventory_service=inventory, auditlog=audit_log)
 
     # 2. Создаем тестовые объекты

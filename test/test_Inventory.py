@@ -1,6 +1,6 @@
 # test_class_Inventory.py
 import pytest
-from class_Inventory import ControlledItem, Stock, Inventory
+from src.automatos.Inventory.AbstractInventory import ControlledItem, Stock, Inventory
 
 @pytest.fixture
 def sample_item():
