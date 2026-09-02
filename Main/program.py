@@ -24,13 +24,13 @@ class MockInventoryService:
         if not self.is_in_stock(item_id, quantity):
             raise Exception("Ошибка склада: недостаточно товара для списания!")
         self.stock[item_id] -= quantity
-        print(f"📦 [Склад]: Списано {quantity} шт. Остаток: {self.stock[item_id]} шт.")
+        print(f" [Склад]: Списано {quantity} шт. Остаток: {self.stock[item_id]} шт.")
 
     def add_item(self, item_id: str, quantity: int) -> None:
         if item_id not in self.stock:
             self.stock[item_id] = 0
         self.stock[item_id] += quantity
-        print(f"📦 [Склад - ОТКАТ]: Возвращено {quantity} шт. Новый остаток: {self.stock[item_id]} шт.")
+        print(f" [Склад - ОТКАТ]: Возвращено {quantity} шт. Новый остаток: {self.stock[item_id]} шт.")
 
 
 # === ГЛАВНЫЙ СКРИПТ ЗАПУСКА (ИНТЕРФЕЙС) ===
@@ -116,7 +116,7 @@ def main():
             robot.dispense = original_dispense
 
         elif choice == "5":
-            print("\n📊 --- ИСТОРИЯ ОПЕРАЦИЙ (ЗАПИСИ ИЗ AUDIT LOG) ---")
+            print("\n --- ИСТОРИЯ ОПЕРАЦИЙ (ЗАПИСИ ИЗ AUDIT LOG) ---")
             if not audit_log.records:
                 print("Журнал пуст.")
             else:
@@ -129,7 +129,7 @@ def main():
             print("\nВыход из программы. Всего доброго!")
             sys.exit(0)
         else:
-            print("\n❌ Неверный ввод! Пожалуйста, выберите число от 1 до 6.")
+            print("\n Неверный ввод! Пожалуйста, выберите число от 1 до 6.")
 
 
 if __name__ == "__main__":
