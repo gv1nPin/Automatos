@@ -2,7 +2,6 @@ from .class_AbstractControlledItem import AbstractControlledItem
 
 class MedicalItem(AbstractControlledItem):
     """ Производный класс для медицинских препаратов (лекарств).
-        Наследует все свойства базового контролируемого предмета и добавляет свои.
 
     Args:
         AbstractControlledItem (_type_): _description_
