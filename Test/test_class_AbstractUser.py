@@ -1,16 +1,21 @@
 import pytest
-from Main.class_User import User 
+from src.class_AbstractUser import AbstractUser 
 
 # 1. Создаем заглушку дочернего класса, чтобы протестировать логику базового класса User
-class MockUser(User):
+class MockUser(AbstractUser):
     def get_max_daily_allowed(self, danger_level: int) -> int:
         return 30
 
     def get_role_name(self) -> str:
         return "Тестовый пользователь"
 
+    # ДОБАВЛЕНО: удовлетворяем новый контракт абстрактного класса AbstractUser
+    def requires_additional_doc(self) -> list[str]:
+        """Заглушка метода контроля документов для успешной сборки абстракции."""
+        return []
 
-# 2. Фикстура для создания чистого пользователя перед каждым тестом
+
+# Все остальные тесты ниже оставляем БЕЗ ИЗМЕНЕНИЙ
 @pytest.fixture
 def active_user():
     return MockUser(user_id="U-001", name="Иван Иванов", clearance_level=3)

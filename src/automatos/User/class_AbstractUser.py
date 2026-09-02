@@ -1,14 +1,14 @@
 from abc import ABC, abstractmethod
 
-class User(ABC):
-    def __init__(self,user_id: str,  name: str, clearance_level: int, is_active: bool = True ):
+class AbstractUser(ABC):
+    def __init__(self,user_id: str,  name: str, clearance_level: int, is_active: bool = True, is_blocked: bool = False ):
         # Блок идентификации
         self.user_id = user_id
         self.name = name
         self.clearance_level = clearance_level
         # Блок контроля
         self.is_active = is_active
-        self.is_blocked = False
+        self.is_blocked = is_blocked
         self.block_reason = None
 
     def block_user(self, reason: str):
@@ -16,7 +16,7 @@ class User(ABC):
         self.is_blocked = True
         self.block_reason = reason
 
-    def unblock_user(self,):
+    def unblock_user(self,): 
         self.is_active = True
         self.is_blocked = False
         self.block_reason = None
@@ -27,4 +27,8 @@ class User(ABC):
 
     @abstractmethod
     def get_role_name(self) -> str:
+        pass
+
+    @abstractmethod
+    def requires_additional_doc(self) ->list[str]:
         pass

@@ -1,7 +1,7 @@
-from .enums import VeteranRole, BenefitLevel
-from .class_User import User
+from .Enums import VeteranRole, BenefitLevel
+from .class_AbstractUser import AbstractUser
 
-class Veteran(User):
+class Veteran(AbstractUser):
     def __init__(self,user_id, name: str, clearance_level: int, role: VeteranRole):
         super().__init__(user_id, name, clearance_level)
         self.role = role
@@ -33,6 +33,8 @@ class Veteran(User):
 
         if danger_level <= 2:
             return 30 # если уровень контроля по препарату низкий, можно купить 30 штук за раз
+        if self.role == VeteranRole.NON_VETERAN:
+            return 0
         if self.role == VeteranRole.DISABLED_VETERAN:
             return 10 # DISABLED_VETERAN допуск по строгим препаратам 10
         if self.role == VeteranRole.COMBAT_VETERAN:

@@ -1,6 +1,6 @@
 import pytest
-from Main.enums import VeteranRole, BenefitLevel
-from Main.class_Veteran import Veteran 
+from src.Enums import VeteranRole, BenefitLevel
+from src.class_Veteran import Veteran 
 
 # Сводные дефолтные данные для тестов
 TEST_ID = "U-999"
@@ -10,22 +10,16 @@ TEST_CL = 3
 # 1. ТЕСТЫ ДЛЯ МЕТОДА get_benefit_level
 # =========================================================================
 
-def test_benefit_level_federal():
-    """Проверка, что ветераны и инвалиды БД получают федеральный бюджет."""
-    v1 = Veteran(TEST_ID, "Тест 1", TEST_CL, role=VeteranRole.COMBAT_VETERAN)
-    v2 = Veteran(TEST_ID, "Тест 2", TEST_CL, role=VeteranRole.DISABLED_VETERAN)
-    assert v1.get_benefit_level() == BenefitLevel.FEDERAL
-    assert v2.get_benefit_level() == BenefitLevel.FEDERAL
-
-def test_benefit_level_regional():
-    """Проверка, что ветераны военной службы получают региональный бюджет."""
-    v = Veteran(TEST_ID, "Тест 3", TEST_CL, role=VeteranRole.MILITARY_SERVICE_VETERAN)
-    assert v.get_benefit_level() == BenefitLevel.REGIONAL
-
-def test_benefit_level_none():
-    """Проверка, что гражданские пациенты идут без льгот."""
-    v = Veteran(TEST_ID, "Тест 4", TEST_CL, role=VeteranRole.NON_VETERAN)
-    assert v.get_benefit_level() == BenefitLevel.NONE
+@pytest.mark.parametrize("role, expected_benefit", [
+    (VeteranRole.COMBAT_VETERAN, BenefitLevel.FEDERAL),
+    (VeteranRole.DISABLED_VETERAN, BenefitLevel.FEDERAL),
+    (VeteranRole.MILITARY_SERVICE_VETERAN, BenefitLevel.REGIONAL),
+    (VeteranRole.NON_VETERAN, BenefitLevel.NONE)
+])
+def test_all_roles_benefit_levels(role, expected_benefit):
+    """Сводный тест сверки: проверяет соответствие каждой роли её уровню бюджета."""
+    v = Veteran(TEST_ID, "Тестовый Пациент", TEST_CL, role=role)
+    assert v.get_benefit_level() == expected_benefit
 
 
 # =========================================================================
@@ -53,10 +47,16 @@ def test_high_danger_level_allowance_combat_veteran(danger_level):
 
 @pytest.mark.parametrize("role_enum", [VeteranRole.MILITARY_SERVICE_VETERAN, VeteranRole.NON_VETERAN])
 @pytest.mark.parametrize("danger_level", [3, 4, 5])  # ИСПРАВЛЕНО: добавлены значения [3, 4, 5]
-def test_high_danger_level_allowance_others(role_enum, danger_level):
-    """Проверка базового лимита (2 шт) для остальных на строгие препараты."""
-    v = Veteran(TEST_ID, "Пациент", TEST_CL, role=role_enum)
+def test_high_danger_level_allowance_military_service_veteran(danger_level):
+    """Проверка лимита (2 шт) для ветеранов военной службы на строгие препараты."""
+    v = Veteran(TEST_ID, "Пациент ВС", TEST_CL, role=VeteranRole.MILITARY_SERVICE_VETERAN)
     assert v.get_max_daily_allowed(danger_level) == 2
+
+@pytest.mark.parametrize("danger_level", [3, 4, 5])
+def test_high_danger_level_allowance_non_veteran(danger_level):
+    """Проверка безопасности: для гражданских лиц лимит на опасные вещества равен 0."""
+    v = Veteran(TEST_ID, "Гражданский Пациент", TEST_CL, role=VeteranRole.NON_VETERAN)
+    assert v.get_max_daily_allowed(danger_level) == 0
 
 
 # =========================================================================
