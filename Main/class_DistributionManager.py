@@ -1,5 +1,8 @@
 from .class_AbstractUser import AbstractUser
 from .class_AbstractControlledItem import AbstractControlledItem
+from .class_RobotStaff import RobotStaff
+from .class_Veteran import Veteran
+
 
 class DistributionManager:
     def __init__(self, inventory_service, auditlog):
@@ -14,6 +17,14 @@ class DistributionManager:
             quantity: int
             ) -> bool:
 
+        if isinstance(operator, RobotStaff):
+            if not operator.can_operate():
+                reason = operator.maintenance_reason or "Робот отключен или неисправен"
+                return self.reject_transaction(operator, recipient, item, quantity, f"Оператор {operator.name} не готов к работе: {reason}")
+        elif not operator.is_active:
+            reason = operator.block_reason or "Причина не указана"
+            return self.reject_transaction(operator, recipient, item, quantity, f"{operator.name} не активен по причине: {reason}")
+
         if quantity <= 0:
             self.auditlog.log_system_error(operator.user_id, "Количество должно быть больше 0")
             return False
@@ -23,13 +34,11 @@ class DistributionManager:
             return self.reject_transaction(operator, recipient, item, quantity, f"{recipient.name} заблокирован. Причина: {reason}")
         
         max_daily_allowed = recipient.get_max_daily_allowed(item.danger_level)
-        if quantity > max_daily_allowed:
-            reason = f"Превышен лимит. Доступно {max_daily_allowed}, запрошено {quantity}"
-            return self.reject_transaction(operator, recipient, item, quantity, reason)
+        already_received = self.auditlog.get_recipient_total_received(recipient.user_id, item.item_id, time_window_hours=24)
 
-        if not operator.is_active:
-            reason = getattr(operator, "maintenance_reason", None) or getattr(operator, "block_reason", "Причина не указана")
-            return self.reject_transaction(operator, recipient, item, quantity, f"{operator.name} не работает по причине {reason}")
+        if (already_received + quantity) > max_daily_allowed:
+            reason = f"Превышен лимит. Доступно {max_daily_allowed}, запрошено {quantity} уже получение {already_received}"
+            return self.reject_transaction(operator, recipient, item, quantity, reason)
 
         if operator.clearance_level < item.danger_level:
             reason = f"Недостаточный уровень допуска оператора {operator.name} ({operator.clearance_level}) для предмета с danger_level {item.danger_level}"
@@ -39,9 +48,9 @@ class DistributionManager:
             required_docs = recipient.requires_additional_doc()
             try:
                 if not operator.verify_scanned_documents(required_docs):
-                    return self.reject_transaction(operator, recipient, item, quantity, "Документы не верифицированы оператором")
+                    return self.reject_transaction(operator, recipient, item, quantity, "Документы не верифицированы")
             except AttributeError:
-                pass
+                return self.reject_transaction(operator, recipient, item, quantity, "Документы не предоставлены")
 
         if not self.inventory.is_in_stock(item.item_id, quantity):
             reason = f"Отсутствует {item.name} на складе"
@@ -50,17 +59,18 @@ class DistributionManager:
         try:
             self.inventory.deduct_item(item.item_id, quantity)
             try:
-                hardware_success = operator.dispense(item.item_id, quantity)
+                hardware_success = operator.dispense(item.item_id, quantity, recipient.name)
                 if not hardware_success:
                     self.inventory.add_item(item.item_id, quantity)
                     try:
                         operator.is_mechanical_ok = False
+                        operator.maintenance_reason = "сбой"
                     except AttributeError:
                         pass
-                    operator.maintenance_reason = "Сбой манипулятора при физической выдаче"
                     return self.reject_transaction(operator, recipient, item, quantity, "Механический сбой устройства выдачи")
             except AttributeError:
-                pass
+                self.inventory.add_item(item.item_id, quantity)
+                return self.reject_transaction(operator, recipient, item, quantity, f"Оператор {operator.name} не поддерживает физическую выдачу")
 
             self.auditlog.log_success(
                 operator_id = operator.user_id,

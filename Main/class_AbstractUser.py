@@ -28,3 +28,7 @@ class AbstractUser(ABC):
     @abstractmethod
     def get_role_name(self) -> str:
         pass
+
+    @abstractmethod
+    def requires_additional_doc(self) ->list[str]:
+        pass

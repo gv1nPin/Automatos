@@ -28,3 +28,6 @@ class RobotStaff(AbstractUser):
         if not self.can_operate():
             return False
         return True
+
+    def requires_additional_doc(self) ->list[str]:
+        pass
